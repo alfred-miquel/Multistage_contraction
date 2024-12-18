@@ -1,6 +1,6 @@
 # A-Community-Detection-Based-Parallel-Algorithm-for-Quantum-Circuit-Simulation-using-Tensor-Networks
 Here you can find the Julia code used in this article
-This article uses QXTools as a base to improve and include new tools for the simulation of quantum circuits
+This article uses QXTools as a base to improve and include new tools for the simulation of quantum circuits. First of all you have to install these tools.
 ## QXTools
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaQX.github.io/QXTools.jl/stable)
