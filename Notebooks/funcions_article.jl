@@ -1169,7 +1169,7 @@ Implements a three-phase tensor network contraction algorithm with parallelism i
 
 # Notes
 This function consists of three phases:
-1. Detect communities in the tensor network using the Girvan–Newman (GN) algorithm.
+1. Detect communities in the tensor network using a FastGreedy algorithm.
 2. Perform parallel contraction within each community.
 3. Perform the final contraction with parallelism applied to the initial steps of the contraction plan.
 """
@@ -1193,7 +1193,7 @@ function ComParCPU_para_GHZ(circ::Circ, entrada::String, eixida::String;timings:
         h_Lg_ig = lg2ig(labeled_light_graf.graph)
         h_Lg_ig.summary(verbosity=1)
 
-        # Detect communities using Girvan–Newman and compute modularity
+        # Detect communities using a fastgreedy algorithm and compute modularity
         comunitats_julia, comunitats_betwenness, modularitat = labelg_to_communitats_fastgreedy(labeled_light_graf)
     end
 
