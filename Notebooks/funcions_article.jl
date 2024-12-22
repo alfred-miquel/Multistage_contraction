@@ -1194,7 +1194,7 @@ function ComParCPU_para_GHZ(circ::Circ, entrada::String, eixida::String;timings:
         h_Lg_ig.summary(verbosity=1)
 
         # Detect communities using Girvan–Newman and compute modularity
-        comunitats_julia, comunitats_betwenness, modularitat = labelg_to_communitats_between(labeled_light_graf, n_com)
+        comunitats_julia, comunitats_betwenness, modularitat = labelg_to_communitats_fastgreedy(labeled_light_graf)
     end
 
     # Phase 2: Parallel contraction within communities
