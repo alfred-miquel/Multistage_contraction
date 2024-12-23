@@ -1,11 +1,13 @@
 # A-Community-Detection-Based-Parallel-Algorithm-for-Quantum-Circuit-Simulation-using-Tensor-Networks
 In this site you can find the **Julia** code and tests used in this work.
-This article uses QXTools as a base to improve and include new tools for the simulation of quantum circuits. First of all, you have to install these tools.
-For more information about Julia, please see [here](https://julialang.org/)
+This article uses QXTools as a base to improve and include new tools for the simulation of quantum circuits. First of all, you have to install these tools, i.e. Julia and QXTools.
+For more information about Julia, please see [here](https://julialang.org/) and for QXTools ,please, visit QXTools site and the global project [here](https://github.com/JuliaQX). In this page we show an abstract.
 
-In the folder **Notebooks** you can find notebooks where there is the code used in the article to be able to reproduce the experiments, if you have the right software environment based on Julia and QXTools. For more information about *Running jupyter notebooks yourself in a terminal*, please see [here](https://julialang.github.io/IJulia.jl/stable/manual/running/).
 
-Please, visit QXTools site and the global project [here](https://github.com/JuliaQX). In this page we show an abstract.
+
+In the folder **Notebooks** you can find notebooks tested in Julia version 1.9.1. and the code used in the article to be able to reproduce the experiments, if you have the right software environment based on Julia and QXTools. For more information about *Running jupyter notebooks yourself in a terminal*, please see [here](https://julialang.github.io/IJulia.jl/stable/manual/running/). 
+
+
 
 
 ## QXTools
