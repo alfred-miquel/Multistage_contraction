@@ -1,1 +1,0 @@
-# Introduirem algorismes importants 
