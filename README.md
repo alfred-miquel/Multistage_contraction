@@ -8,7 +8,23 @@ For more information about Julia, please see [here](https://julialang.org/) and 
 In the folder **Notebooks** you can find notebooks tested in Julia version 1.9.1. and the code used in the article to be able to reproduce the experiments, if you have the right software environment based on Julia and QXTools. For more information about *Running jupyter notebooks yourself in a terminal*, please see [here](https://julialang.github.io/IJulia.jl/stable/manual/running/). 
 
 
+You can also find the algorithms used in the article in the **src** folder.
 
+## Running notebooks
+
+The new features added to  QXTools can be installed using Julia's *include* command from the Julia REPL:
+
+```
+# Load custom functions
+include("../src/funcions_article.jl");
+```
+You can just run jupyter notebook yourself in a terminal. To simplify installation, however, you can alternatively type the following in Julia, at the julia prompt:
+
+```
+using IJulia
+notebook()
+```
+to launch the IJulia notebook in your browser. For more information, please see [here](https://julialang.github.io/IJulia.jl/stable/manual/running/).
 
 ## QXTools
 
@@ -19,7 +35,6 @@ In the folder **Notebooks** you can find notebooks tested in Julia version 1.9.1
 
 QXTools is a Julia package for simulating quantum circuits using tensor networking approaches. It targets large distributed memory clusters with hardware
 accelerators. It was developed as part of the QuantEx project, one of the individual software projects of WP8 of PRACE 6IP.
-
 QXTools depends on a number of other Julia packages developed that were also developed as part of the QuantEx project. These include QXZoo which
 is capable of generating and manipulating quantum circuits, QXTns which features data structures and functions for manipulating tensor networks,
 QXGraphDecompositions which implements a number of graph algorithms for finding good contraction plans and QXContexts which is designed to run on large distributed
