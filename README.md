@@ -1,132 +1,97 @@
-# A-Community-Detection-Based-Parallel-Algorithm-for-Quantum-Circuit-Simulation-using-Tensor-Networks
-In this site you can find the **Julia** code and tests used in this work.
-This article uses QXTools as a base to improve and include new tools for the simulation of quantum circuits. First of all, you have to install these tools, i.e. Julia and QXTools.
-For more information about Julia, please see [here](https://julialang.org/) and for QXTools ,please, visit QXTools site and the global project [here](https://github.com/JuliaQX). In this page we show an abstract.
 
+# Multistage Contraction Algorithm Repository
 
+This repository contains the implementation of the multistage contraction algorithm (`ComPar`) designed for the efficient simulation of quantum circuits. The algorithm leverages parallel tensor network contraction methods to represent and compute complex quantum circuits efficiently. 
 
-In the folder **Notebooks** you can find notebooks tested in Julia version 1.9.1. and the code used in the article to be able to reproduce the experiments, if you have the right software environment based on Julia and QXTools. For more information about *Running jupyter notebooks yourself in a terminal*, please see [here](https://julialang.github.io/IJulia.jl/stable/manual/running/). 
+The development of this repository is based on the [QXTools package for Julia](https://juliaqx.github.io/QXTools.jl). QXTools is an open-source framework that facilitates the creation, manipulation, and simulation of tensor networks associated with quantum circuits. It integrates state-of-the-art libraries for tensor operations and supports advanced parallelization techniques on both CPUs and GPUs.
 
+The repository includes several variants of the multistage algorithm, leveraging both multicore multiprocessors and GPUs for parallel tensor contraction. These implementations align with the algorithms and results described in the article.
 
-You can also find the algorithms used in the article in the **src** folder.
+**Reference**: Pastor, A. M., Badia, J. M., Castillo, M. I. (2025). A Community Detection-Based Parallel Algorithm for Quantum Circuit Simulation Using Tensor Networks. *The Journal of Supercomputing*.
 
-## Running notebooks
+## Contents
 
-The new features added to  QXTools can be installed using Julia's *include* command from the Julia REPL:
+### `src`
+The `src` directory contains the core implementation of the multistage contraction algorithm. This includes:
 
-```
-# Load custom functions
-include("../src/funcions_article.jl");
-```
-You can just run jupyter notebook yourself in a terminal. To simplify installation, however, you can alternatively type the following in Julia, at the julia prompt:
+- The multistage algorithm described in the article.
+- Variants using different parallelization strategies for tensor contraction on multicore processors and GPUs.
 
-```
-using IJulia
-notebook()
-```
-to launch the IJulia notebook in your browser. For more information, please see [here](https://julialang.github.io/IJulia.jl/stable/manual/running/).
+### Jupyter Notebooks
+Three commented Jupyter notebooks are provided to test the algorithms and replicate experimental results included in the article. These notebooks guide users through setting up and running the experiments step by step.
 
-## QXTools
+## Prerequisites
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaQX.github.io/QXTools.jl/stable)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://JuliaQX.github.io/QXTools.jl/dev)
-[![Build Status](https://github.com/JuliaQX/QXTools.jl/workflows/CI/badge.svg)](https://github.com/JuliaQX/QXTools.jl/actions)
-[![Coverage](https://codecov.io/gh/JuliaQX/QXTools.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaQX/QXTools.jl)
+To test the code, ensure the following software is installed:
 
-QXTools is a Julia package for simulating quantum circuits using tensor networking approaches. It targets large distributed memory clusters with hardware
-accelerators. It was developed as part of the QuantEx project, one of the individual software projects of WP8 of PRACE 6IP.
-QXTools depends on a number of other Julia packages developed that were also developed as part of the QuantEx project. These include QXZoo which
-is capable of generating and manipulating quantum circuits, QXTns which features data structures and functions for manipulating tensor networks,
-QXGraphDecompositions which implements a number of graph algorithms for finding good contraction plans and QXContexts which is designed to run on large distributed
-clusters.
+1. **Julia**
+   - Download and install Julia from [https://julialang.org/](https://julialang.org/).
 
-Documentation can be found [here](https://JuliaQX.github.io/QXTools.jl/dev). 
+2. **Python** (for running the Jupyter notebooks)
+   - Install Python from [https://www.python.org/](https://www.python.org/).
+   - Install Jupyter Notebook by running:
+     ```bash
+     pip install notebook
+     ```
 
-The design and implementation of QXTools and related packages was inspired by many other frameworks and packages including ITensors.jl, TensorOperations.jl,
-Yao.jl, TAL-SH and ExaTN.
+> **Note:** There is no need to preinstall QXTools or other related packages. The required packages can be installed interactively within the Julia environment when running the code or via the provided Jupyter notebooks.
 
-## Installation
+## Quick Start Example
 
-QXTools is a Julia package and can be installed using Julia's inbuilt package manager from the Julia REPL using.
+Here is a simple "Hello World" example to run the `ComPar` algorithm on a Quantum Fourier Transform (QFT) circuit of a specific size, using a multicore CPU in all stages.
 
-```
+### Julia Code Example
+
+```julia
+# Add necessary packages
 import Pkg
 Pkg.add("QXTools")
-```
+Pkg.add("QXGraphDecompositions")
+Pkg.add("QXZoo")
 
-## Example usage
-
-An example of how QXTools can be used to calculate a set of amplitudes for small GHZ preparation circuit looks like
-
-```
+# Using required modules
 using QXTools
-using QXTools.Circuits
+using QXZoo
+using QXGraphDecompositions
 
-# Create ghz circuit
-circ = create_ghz_circuit(3)
+# Create a QFT circuit with 10 qubits
+circuit = create_qft_circuit(10)
 
-# Convert the circuit to a tensor network circuit
-tnc = convert_to_tnc(circ)
+# Convert the circuit to a tensor network circuit (TNC)
+tnc = convert_to_tnc(circuit)
 
-# Find a good contraction plan
-plan = flow_cutter_contraction_plan(tnc; time=10)
+# Configure the contraction algorithm
+num_communities = 4  # Number of communities for the multistage algorithm
+input_state = "0" ^ 10  # All qubits initialized to 0
+output_state = "1" ^ 10 # Target output state
 
-# Contract the network using this plan to find the given amplitude for different outputs
-@show QXTools.single_amplitude(tnc, plan, "000")
-@show QXTools.single_amplitude(tnc, plan, "111")
-@show QXTools.single_amplitude(tnc, plan, "100")
+# Run the ComPar algorithm using multicore CPU
+result = ComParCPU(circuit, input_state, output_state, num_communities;
+                    timings=true, decompose=true)
+
+# Print results
+println("Contraction completed. Results:")
+println(result)
 ```
 
-This is only recommended for small test cases. For larger scale runs one can call the `generate_simulation_files`
-which will do the conversion to a network, find the contraction plan and create output files describing the required
-calculations. For example
+### Running the Code
+Save the above code in a file, e.g., `run_example.jl`. Then, run the file from the Julia REPL:
 
-```
-using QXTools
-using QXTools.Circuits
-
-# Create ghz circuit
-circ = create_ghz_circuit(3)
-
-generate_simulation_files(circ, "ghz_3", time=10)
+```bash
+julia run_example.jl
 ```
 
-will generate the files:
-- `ghz_3.qx`: A DSL file with instructions
-- `ghz_3.jld2`: A data file with initial tensors
-- `ghz_3.yml`: A parameter file with parameters controlling the simulation
+## Using Jupyter Notebooks
 
-These can be used as input to QXContexts to run the simulation on distributed clusters.
-For more details and options see the documentation at [docs](https://juliaqx.github.io/QXContexts.jl/dev/).
+To explore the algorithms further, open one of the provided notebooks:
 
+1. Navigate to the `notebooks` directory.
+2. Launch the Jupyter Notebook server:
+   ```bash
+   jupyter notebook
+   ```
+3. Open a notebook and follow the instructions provided.
 
-## Building documentation
+---
 
-QXTools.jl using [Documenter.jl](https://juliadocs.github.io/Documenter.jl/stable/) to generate documentation. To build
-the documentation locally run the following from the `docs` folder.
-
-The first time it is will be necessary to instantiate the environment to install dependencies
-
-```
-julia --project -e 'import Pkg; Pkg.instantiate()'
-```
-
-and then to build the documentation
-
-```
-julia --project make.jl
-```
-
-To serve the generated documentation locally use
-
-```
-julia --project -e 'using LiveServer; serve(dir="build")'
-```
-
-Or with python3 using from the `docs/build` folder using
-
-```
-python3 -m http.server
-```
-
-The generated documentation should now be viewable locally in a browser at `http://localhost:8000`.
+We hope this repository provides valuable resources for exploring and experimenting with the multistage contraction algorithms!
