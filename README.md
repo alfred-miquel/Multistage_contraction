@@ -38,24 +38,42 @@ To test the code, ensure the following software is installed:
 
 ## Quick Start Example
 
-Here is a simple "Hello World" example to run the `ComPar` algorithm on a Quantum Fourier Transform (QFT) circuit of a specific size, using a multicore CPU in all stages.
+Here is a simple "Hello World" example to run the `ComPar` algorithm on a GHZ circuit of a specific size, using a multicore CPU in all stages.
 
 ### Julia Code Example
 
 ```julia
 # Add necessary packages
-import Pkg
+import Pkg; 
 Pkg.add("QXTools")
 Pkg.add("QXGraphDecompositions")
 Pkg.add("QXZoo")
+Pkg.add("DataStructures")
+Pkg.add("QXTns")
+Pkg.add("NDTensors")
+Pkg.add("ITensors")
+Pkg.add("LightGraphs")
+Pkg.add("PyCall")
+
 
 # Using required modules
 using QXTools
+using QXTns
 using QXZoo
+using PyCall
 using QXGraphDecompositions
+using LightGraphs
+using DataStructures
+using TimerOutputs
+using ITensors
+using LinearAlgebra
+using NDTensors
 
-# Create a QFT circuit with 10 qubits
-circuit = create_qft_circuit(10)
+# Load custom functions from the folder src
+include("../src/funcions_article.jl");
+
+# Create a GHZ circuit with 10 qubits
+circuit = create_ghz_circuit(10)
 
 # Convert the circuit to a tensor network circuit (TNC)
 tnc = convert_to_tnc(circuit)
@@ -75,10 +93,10 @@ println(result)
 ```
 
 ### Running the Code
-Save the above code in a file, e.g., `run_example.jl`. Then, run the file from the Julia REPL:
+Save the above code in a file, e.g., `run_example.jl`. Then, run the file from the Julia REPL, using the -t auto option to be able to use threads:
 
 ```bash
-julia run_example.jl
+julia -t auto run_example.jl
 ```
 
 ## Using Jupyter Notebooks
@@ -90,7 +108,13 @@ To explore the algorithms further, open one of the provided notebooks:
    ```bash
    jupyter notebook
    ```
-3. Open a notebook and follow the instructions provided.
+   Although you can use ```IJulia``` from Julia REPL. Please visit [here](https://julialang.github.io/IJulia.jl/stable/manual/installation/):
+   ```
+   using IJulia
+   notebook()
+    ```
+    This action launchs the IJulia notebook in your browser.
+4. Open a notebook and follow the instructions provided.
 
 ---
 
